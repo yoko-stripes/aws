@@ -12,11 +12,14 @@ def lambda_handler(event, context):
     getareceivercontactus = os.getenv ('RECIPIENT_EMAIL_CONTACT_US')
     getareceiverktown = os.getenv ('RECIPIENT_EMAIL_KTOWN')
     getareceiverreprintrequest = os.getenv ('RECIPIENT_EMAIL_REQUEST_REPRINT')
+    getprintshopquote = os.getenv ('RECIPIENT_EMAIL_PRINTSHOP').split(',')
     getasendercontactus = os.getenv ('SENDER_EMAIL_CON_US')
     getasenderratebook = os.getenv ('SENDER_EMAIL_RATE_BOOK')
     getasenderktown = os.getenv ('SENDER_EMAIL_KTOWN')
     getasenderrequestreprint = os.getenv ('SENDER_EMAIL_REQUEST_REPRINT')
+    getasenderprintshop = os.getenv ('SENDER_EMAIL_PRINTSHOP')
     awsareamap = os.getenv ('SES_REGION')
+    
     
     sesClient = boto3.client("ses", region_name = awsareamap )
 
@@ -487,4 +490,54 @@ def lambda_handler(event, context):
             'Content-Type': 'text/html'
                },
             'body': html_content
+            }
+    elif incommingform == "PsQuote":
+       sanitized_projectname = sanitized_data['projectname']
+       sanitized_productservice = sanitized_data['productservice']
+       sanitized_quantity = sanitized_data['quantity']
+       sanitized_projectdetails = sanitized_data['projectdetails']
+       sanitized_firstname = sanitized_data['firstname']
+       sanitized_lastname = sanitized_data['lastname']
+       sanitized_email = sanitize_email(email)
+       sanitized_phonenumber = sanitized_data['phonenumber']
+       sanitized_organizationname = sanitized_data['organizationname']
+       sanitized_organizationaddress = sanitized_data['organizationaddress']    
+       
+       emailResponse = sesClient.send_email(
+         Destination = {
+            "ToAddresses":
+                getprintshopquote
+         },
+         Message={
+            "Body":{
+                "Text":{
+                    "Data":  
+                             f"Project details \n" 
+                             f"Project name: {sanitized_projectname} \n"
+                             f"Product,Service: {sanitized_productservice} \n"
+                             f"Quantity: {sanitized_quantity} \n"
+                             f"Project Details:\n"
+                             f"{sanitized_projectdetails} \n\n"
+                             f"Personal details \n"
+                             f"First name: {sanitized_firstname} \n"
+                             f"Last name: {sanitized_lastname} \n"
+                             f"Email: {sanitized_email} \n"
+                             f"Phone number: {sanitized_phonenumber} \n"
+                             f"Organization Name: {sanitized_organizationname} \n"
+                             f"Organization Address: {sanitized_organizationaddress} \n"
+                             f"Location: {sanitized_location} \n"
+                }
+            },
+            "Subject":{
+                "Data": "Printshop printing quote has been submitted"
+            },
+         },
+        Source = getprintshopquote
+      )
+       return {
+            'statusCode': 302,
+            'headers': {
+            'Location': 'https://printshop.stripes.com/thankyou.html'
+               },
+            'body': ''
             }
