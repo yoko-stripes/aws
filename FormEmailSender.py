@@ -79,7 +79,7 @@ def lambda_handler(event, context):
        'names': name,
        'locations': location,
        'messages': message
-        }  
+        }    
     elif incommingform == "AdvRaBoK":
         name = form_data.get('name', [''])[0] 
         lname = form_data.get('lname', [''])[0] 
@@ -122,10 +122,39 @@ def lambda_handler(event, context):
 
     # Blocking Disposable Email Services
     # List of known disposable email services
-    disposable_domains = ["mailinator.com", "10minutemail.com", "guerrillamail.com", "maildrop.cc", "throwawaymail.com",
-                        "temp-mail.org", "getnada.com", "fakemailgenerator.com", "mohmal.com", "dispostable.com", 
-                        "yopmail.com", "spamgourmet.com", "tempail.com", "emailondeck.com", "mailcatch.com", 
-                        "trashmail.com", "binkmail.com", "fakeinbox.com", "throwawayemail.com", "tempinbox.com"]
+    disposable_domains = {"teleg.eu", "ema-sofia.eu", "cyclelove.cc", "mailo.icu", "lyricspad.net", "1secmail.com", "1secmail.org","1secmail.net",
+                          "wuuvo.com", "imailfree.cc", "cebaike.com", "bheps.com", "dcctb.com", "kzccv.com", "qiott.com", "wwjmp.com", "esiix.com",
+                          "oosln.com", "vddaz.com", "0815.ru", "0wnd.net", "0wnd.org", "10minutemail.co.za", "10minutemail.com", "123-m.com",
+                          "1fsdfdsfsdf.tk", "1pad.de", "20minutemail.com", "21cn.com", "2fdgdfgdfgdf.tk", "2prong.com", "30minutemail.com",
+                          "33mail.com", "instant-mail.de", "ip6.li", "irish2me.com", "iwi.net", "jetable.com", "jetable.fr.nf", "jetable.net",
+                          "jetable.org", "jnxjn.com", "jourrapide.com", "jsrsolutions.com", "kasmail.com", "killmail.com", "klassmaster.com",
+                          "klzlk.com", "koszmail.pl", "kurzepost.de", "lawlita.com", "temp-mail.org", "temp-mail.com", "temp-mail.io", "tempmail.com",
+                          "tempmail.net", "tempmail.org", "tempail.com", "tempinbox.com", "tempinbox.co", "10minutemail.net", "10minmail.com",
+                          "getnada.com", "nada.email", "mailinator.com", "mailinator.net", "mailinator.org", "maildrop.cc", "maildrop.xyz", "maildrop.cf", 
+                          "mailnesia.com","moakt.com", "guerrillamail.com", "guerrillamail.org", "yopmail.com", "yopmail.net", "yopmail.fr", "spambog.com", 
+                          "spamgourmet.com", "spammotel.com", "trashmail.com", "trashmail.me", "trashmail.net", "trashmail.de","fakeinbox.com",
+                          "fakemailgenerator.com", "fakemail.net","fake-mail.org", "throwawaymail.com", "discard.email", "discardmail.com", "dispostable.com",
+                          "inboxbear.com", "mailboxbear.com", "mailcatch.com", "mailcatch.org", "mintemail.com", "mytemp.email", "mytrashmail.com", "sharklasers.com", 
+                          "sharkmail.com", "shark-mail.com", "pokemail.net","mailforspam.com","mail-temporaire.fr","temp-mail.pro", "tempmailbox.xyz", "tempmail.lol", 
+                          "tempmailplus.com", "temp-mail.ru","temp-mail.xyz", "burner.email", "burneremail.com", "burnermail.io", "burnermail.net", "burnermail.com", 
+                          "10minutemail.co", "10minutemail.co.uk", "10minute-mail.com", "20minutemail.net", "mailcatcher.me", "inboxroad.com", 
+                          "inboxalias.com", "inboxkitten.com", "getairmail.com", "airmail.cc", "airmail.tk", "binkmail.com", "disposablemail.com", "disposablemail.de", 
+                          "disposablemail.org", "mailnull.com", "mailforspam.net","moe-mail.com", "nowmymail.com", "oneoffemail.com", "proxymail.eu", "tempmail.de", 
+                          "tempmail.org.uk", "tempmail.co.nz", "temp-mail.co", "tempmail.co", "tempeml.com", "tempe-mail.com", "temporarymail.com",
+                          "tmail.ws", "emailondeck.com", "emailtemporanea.com", "trashmail.io", "inbox.lv", "luxusmail.org", "luxusmail.com", "luxusmail.net", 
+                          "luxusmail.info", "findtempmail.com", "emailfake.com", "my10minutemail.com", "getmail.pics", "throwawayemail.com", "spamdecoy.net", 
+                          "disposableinbox.com", "meltmail.com", "mailnesia.xyz", "email60.com", "deadaddress.com", "spamex.com", "spamspot.com", "spamavert.com", 
+                          "spamherelots.com", "spamthisplease.com", "spamgourmet.org", "dodgeit.com", "veryrealemail.com", "shortmail.net", "spambox.us", 
+                          "spambox.info", "spambox.xyz", "mvrht.net", "sogetthis.com", "spamify.com", "spamfree24.org", "spamfree24.net", "spamfree24.com", 
+                          "spamfree24.eu", "spamfree24.de", "spam4.me", "hushmail.org", "emailsensei.com", "wh4f.org", "courriel.fr.nf", "courrieltemporaire.com", 
+                          "courriel.fr", "letthemeatspam.com", "no-spam.ws", "putthisinyourspamdatabase.com", "spamgourmet.net", "spamgourmet.co.uk", "emailsilo.com", 
+                          "noclickemail.com", "mailhazard.com", "throwawaymail.email", "temporaryinbox.com", "tempr.email", "xojxe.com", "mail-temp.com", 
+                          "mail-temp.net", "dudmail.com", "bccto.me", "zippymail.info", "trbvm.com", "uroid.com", "wimsg.com", "spameater.org", "getairmail.net", 
+                          "spambox.irish", "ghosttexter.de", "spamcowboy.com", "spamcowboy.net", "spamcowboy.org", "mail-temporaire.com", "spamcorptastic.com", 
+                          "maildim.com", "nowemail.net", "spamslicer.com", "digitalsanctuary.com", "ieatspam.eu", "ieatspam.info", "obobbo.com", "safemail.link", 
+                          "mepost.pw", "fast10s.online", "tempmail.io", "guerillamailblock.com", "mytempmail.com", "mailmoat.com", "mailhero.io", 
+                          "tmail.io", "tmpmail.net", "moakt.cc", "moakt.ws", "moakt.co", "fmail.pw", "emkei.cz", "linshiyouxiang.net", "linshiyouxiang.com", 
+                          "mintemail.net", "mintemail.biz"}
     # If Found Stop Program
     if email.split('@')[1] in disposable_domains:
     # Exit the program if a disposable email is detected   
@@ -145,8 +174,13 @@ def lambda_handler(event, context):
         }
 
     #Check For Spammy Words
-    spammyspam = ['free', 'buy now', 'http', 'https', 'www', 'script', '$', 'kill', 'opportunity', 'attention', 'salary', 'proposal',
-                  'deal', 'invitation', 'investment', 'exclusive', 'spende', 'risk-free', 'audit', 'spende' ]
+    spammyspam = {'free', 'buy now', 'http', 'https', 'www', 'script', '$', 'kill', 'opportunity', 'attention', 'salary', 'proposal',
+                  'deal', 'invitation', 'investment', 'exclusive', 'risk-free', 'audit', 'spende', 'deals', 'now!', 'donation',
+                  'bargain', 'refinance', 'claims', 'loans', 'gift', 'winner', 'cash', 'profit', 'sale', 'rich', 'guarantee', 'urgent',
+                  'limited', 'bonus', 'viagra', 'luxury', 'miracle', 'incredible', 'cure', 'billions', 'billion', 'millions', 'million',
+                  'fantastic', 'debt', 'beneficiary', 'casino', 'confidential', 'fees', 'score', 'winnings', 'pre-approved', 'broker',
+                  'certified', 'betting', 'alert', 'enhancement', 'gambling', 'medicines', 'mortgage', 'scorecard', 'settlement', 'spam',
+                  'sweepstakes', 'upsell', 'click', 'prize', 'guaranteed', 'pills', 'crypto', 'jackpot', 'inheritance'}
     
     # checkthevar will depend on iamform           
     if any(phrase.lower() in var.lower() for phrase in spammyspam for var in checkthevar):
